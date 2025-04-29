@@ -21,22 +21,20 @@ class Calorimeter:
 
     def getFinalTemperature(self):
 
-        n1, n2 = self.compound1.moles, self.compound2.moles
+        m1, m2 = self.compound1.mass, self.compound2.mass
         Ti1, Ti2 = self.compound1.temperature, self.compound2.temperature
 
         if self.condition.upper() == "PRESSURE":
-            C1, C2 = self.compound1.Cp, self.compound2.Cp
-        else:  # "VOLUME"
-            C1, C2 = self.compound1.Cv, self.compound2.Cv
+            Cp1, Cp2 = self.compound1.Cp, self.compound2.Cp  # J/g*K
+        else:  # “VOLUME”
+            Cp1, Cp2 = self.compound1.Cv, self.compound2.Cv
 
+        # function from chatgpt because i dont know how to do integrals in python
         def energy_balance(Tf):
-
-            q1, _ = quad(C1, Ti1, Tf)
-            q2, _ = quad(C2, Ti2, Tf)
-            return n1 * q1 + n2 * q2
+            q1, _ = quad(Cp1, Ti1, Tf)
+            q2, _ = quad(Cp2, Ti2, Tf)
+            return m1 * q1 + m2 * q2
 
         Tf_guess = 0.5 * (Ti1 + Ti2)
-        Tf_final = fsolve(energy_balance, Tf_guess)[0]
-
-        return Tf_final
+        return fsolve(energy_balance, Tf_guess)[0]
 

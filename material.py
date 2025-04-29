@@ -1,5 +1,3 @@
-
-
 class Material:
 
     # Dictionaries for physical properties
@@ -304,4 +302,6 @@ class Material:
 
         return material
 
-
+    def setMass(self, grams):
+        self.mass = grams
+        self.moles = grams/self.molarMass
