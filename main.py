@@ -1,21 +1,21 @@
 from material import Material
 from calorimeter import Calorimeter
 
-water = Material(name='Water')
-water.temperature = 273
-water.moles = 1
-water.Cp = 4.18
-water.boilingPoint = 373.15
-water.meltingPoint = 273.15
+def main():
 
-beer = Material(name='beer')
-beer.temperature = 373
-beer.moles = 1
-beer.Cp = 4.18
-beer.boilingPoint = 373.15
-beer.meltingPoint = 273.15
+    compound1 = Material("water")
+    compound1.mass = 100
+    compound1.moles = compound1.mass / compound1.molarMass
+    compound1.temperature = 300
 
-calorimeter = Calorimeter(water, beer)
-finalTemp = calorimeter.getFinalTemperature(water,beer)
+    compound2 = Material("water")
+    compound2.mass = 100
+    compound2.moles = compound2.mass / compound2.molarMass
+    compound2.temperature = 200
 
-print(finalTemp)
+    calorimeter = Calorimeter(compound1, compound2)
+    finalTemp = calorimeter.getFinalTemperature()
+
+    print(finalTemp)
+
+main()
