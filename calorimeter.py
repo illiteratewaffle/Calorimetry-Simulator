@@ -9,17 +9,23 @@ class Calorimeter:
         self.compound2 = compound2
         self.condition = condition
 
-    def begin(self):
-        finalTemp = self.getFinalTemperature(self.compound1, self.compound2)
-        return finalTemp
-
     def getHotter(self, compound1, compound2):
+        """
+        Method to find hotter material
+        :param compound1:
+        :param compound2:
+        :return: the hotter material
+        """
         if compound1.temperature > compound2.temperature:
             return compound1
         else:
             return compound2
 
     def getFinalTemperature(self):
+        """
+        Method to find final temperature
+        :return: final temperature
+        """
 
         m1, m2 = self.compound1.mass, self.compound2.mass
         Ti1, Ti2 = self.compound1.temperature, self.compound2.temperature

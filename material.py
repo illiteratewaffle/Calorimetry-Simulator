@@ -1,5 +1,4 @@
 class Material:
-
     # Dictionaries for physical properties
     # g/mol
     molar_masses = {
@@ -57,38 +56,38 @@ class Material:
 
     # J/mol
     enthalpy_of_fusion = {
-        "Water": 6.01*1000,
-        "Aluminum": 10.71*1000,
-        "Copper": 13.05*1000,
-        "Iron": 13.81*1000,
-        "Lead": 4.77*1000,
-        "Silver": 11.3*1000,
-        "Gold": 12.55*1000,
-        "Ethanol": 4.9*1000,
-        "Benzene": 9.87*1000,
-        "Methanol": 3.22*1000,
-        "Acetone": 5.69*1000,
-        "Hexane": 8.94*1000,
-        "Toluene": 6.64*1000,
-        "Acetonitrile": 5.76*1000,
+        "Water": 6.01 * 1000,
+        "Aluminum": 10.71 * 1000,
+        "Copper": 13.05 * 1000,
+        "Iron": 13.81 * 1000,
+        "Lead": 4.77 * 1000,
+        "Silver": 11.3 * 1000,
+        "Gold": 12.55 * 1000,
+        "Ethanol": 4.9 * 1000,
+        "Benzene": 9.87 * 1000,
+        "Methanol": 3.22 * 1000,
+        "Acetone": 5.69 * 1000,
+        "Hexane": 8.94 * 1000,
+        "Toluene": 6.64 * 1000,
+        "Acetonitrile": 5.76 * 1000,
     }
 
     # J/mol
     enthalpy_of_vaporization = {
-        "Water": 40.7*1000,
-        "Aluminum": 293*1000,
-        "Copper": 300*1000,
-        "Iron": 349*1000,
-        "Lead": 178*1000,
-        "Silver": 254*1000,
-        "Gold": 334*1000,
-        "Ethanol": 38.6*1000,
-        "Benzene": 30.8*1000,
-        "Methanol": 35.3*1000,
-        "Acetone": 31.3*1000,
-        "Hexane": 28.9*1000,
-        "Toluene": 38.0*1000,
-        "Acetonitrile": 31.3*1000,
+        "Water": 40.7 * 1000,
+        "Aluminum": 293 * 1000,
+        "Copper": 300 * 1000,
+        "Iron": 349 * 1000,
+        "Lead": 178 * 1000,
+        "Silver": 254 * 1000,
+        "Gold": 334 * 1000,
+        "Ethanol": 38.6 * 1000,
+        "Benzene": 30.8 * 1000,
+        "Methanol": 35.3 * 1000,
+        "Acetone": 31.3 * 1000,
+        "Hexane": 28.9 * 1000,
+        "Toluene": 38.0 * 1000,
+        "Acetonitrile": 31.3 * 1000,
     }
 
     # Cp functions
@@ -261,28 +260,31 @@ class Material:
         self.HVap = None
 
         if self.name in Material.molar_masses:
-            self.molarMass    = Material.molar_masses[self.name]
+            self.molarMass = Material.molar_masses[self.name]
             self.boilingPoint = Material.boiling_points[self.name]
             self.meltingPoint = Material.melting_points[self.name]
-            self.Hfus         = Material.enthalpy_of_fusion[self.name]
-            self.HVap         = Material.enthalpy_of_vaporization[self.name]
+            self.Hfus = Material.enthalpy_of_fusion[self.name]
+            self.HVap = Material.enthalpy_of_vaporization[self.name]
 
             self.Cp = lambda T: Material.cp_functions[self.name](self, T)
             self.Cv = lambda T: Material.cv_functions[self.name](self, T)
 
     def state(self):
+        """
+        Determines physical state of material
+        :return: physical state
+        """
         if (self.temperature < self.meltingPoint):
             self.state = "SOLID"
-        elif (self. temperature > self.boilingPoint):
+        elif (self.temperature > self.boilingPoint):
             self.state = "GAS"
         elif ((self.temperature > self.meltingPoint) and (self.temperature < self.boilingPoint)):
             self.state = "LIQUID"
 
-
     def materialChoice(self, choice):
         """
         A database for materials and their physical properties.
-        :param choice: (str) name of the material
+        :param choice: name of the material
         :return: Material object
         """
         choice_clean = choice.capitalize()
@@ -304,4 +306,4 @@ class Material:
 
     def setMass(self, grams):
         self.mass = grams
-        self.moles = grams/self.molarMass
+        self.moles = grams / self.molarMass
