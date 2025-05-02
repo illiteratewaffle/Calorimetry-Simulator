@@ -1,5 +1,6 @@
-from scipy.integrate import quad
-from scipy.optimize import fsolve
+
+from integral import Integral
+
 
 class Calorimeter:
 
@@ -21,28 +22,41 @@ class Calorimeter:
         else:
             return compound2
 
-    def getRealFinalTemperature(self):
-        """
-        Method to find final temperature
-        :return: final temperature
-        """
+    def getRealFinalTemperature(self, step=0.1):
 
-        m1, m2 = self.compound1.mass, self.compound2.mass
+        m1, m2   = self.compound1.mass, self.compound2.mass
         Ti1, Ti2 = self.compound1.temperature, self.compound2.temperature
 
+        # choose the right Cp(T) functions
         if self.condition.upper() == "PRESSURE":
-            Cp1, Cp2 = self.compound1.Cp, self.compound2.Cp  # J/g*K
-        else:  # “VOLUME”
+            Cp1, Cp2 = self.compound1.Cp, self.compound2.Cp
+        else:  # "VOLUME"
             Cp1, Cp2 = self.compound1.Cv, self.compound2.Cv
 
-        # function from chatgpt because i dont know how to do integrals in python
-        def energy_balance(Tf):
-            q1, _ = quad(Cp1, Ti1, Tf)
-            q2, _ = quad(Cp2, Ti2, Tf)
-            return m1 * q1 + m2 * q2
+        def net_heat(Tf):
+            q1 = Integral.integrate(Cp1, Ti1, Tf)
+            q2 = Integral.integrate(Cp2, Ti2, Tf)
+            return m1*q1 + m2*q2
 
-        Tf_guess = 0.5 * (Ti1 + Ti2)
-        return fsolve(energy_balance, Tf_guess)[0]
+        # linear scan from the colder to the hotter material from chatgpt
+        loT, hiT = sorted((Ti1, Ti2))
+        prev_T   = loT
+        prev_Q   = net_heat(prev_T)
+
+        steps = int((hiT - loT) / step) + 1
+        for k in range(1, steps + 1):
+            T = loT + k*step
+            Q = net_heat(T)
+            if prev_Q == 0:       # exact
+                return prev_T
+            if prev_Q * Q < 0:    # sign changed ⇒ root between prev_T and T
+                # single linear interpolation for a better estimate
+                return prev_T + (T - prev_T) * (-prev_Q) / (Q - prev_Q)
+            prev_T, prev_Q = T, Q
+
+        # fallback: energies never crossed zero (should not happen with good data)
+        return (Ti1 + Ti2) * 0.5
+        # ====
 
     def getIdealFinalTemperature(self, compound1, compound2):
         n1 = compound1.moles
