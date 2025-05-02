@@ -6,8 +6,9 @@ MATERIALS = ["Water", "Aluminum", "Copper", "Iron", "Lead", "Silver", "Gold", "E
 
 def main():
     compound1, compound2 = userChooseMaterial()
+    condition = getCondition()
 
-    calorimeter = Calorimeter(compound1, compound2)
+    calorimeter = Calorimeter(compound1, compound2, condition)
 
     heatCapacity = userChooseAccuracy()
 
@@ -56,8 +57,25 @@ def userChooseAccuracy():
     approximationChoice = input("Choose the accuracy approximation: ").capitalize()
     if approximationChoice == "A":
         return "Independent"
-    else:  #approximationChoice == "B"
+    elif approximationChoice == "B":
         return "Dependent"
+    else:
+        print("Invalid approximation. Refer to the list of available accuracies.")
+        return None
 
+
+def getCondition():
+    print("Choose the condition of a calorimetry experiment: ")
+    print("""Available conditions: "Constant Pressure" or "Constant Volume" """)
+    print("""Type "P" for constant pressure, "V" for constant volume """)
+
+    approximationChoice = input("Choose condition: ").capitalize()
+    if approximationChoice == "P":
+        return "PRESSURE"
+    elif approximationChoice == "V":
+        return "VOLUME"
+    else:
+        print("Invalid approximation. Refer to the list of available conditions.")
+        return None
 
 main()
