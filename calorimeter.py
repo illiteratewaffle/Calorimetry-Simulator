@@ -21,7 +21,7 @@ class Calorimeter:
         else:
             return compound2
 
-    def getFinalTemperature(self):
+    def getRealFinalTemperature(self):
         """
         Method to find final temperature
         :return: final temperature
@@ -44,3 +44,18 @@ class Calorimeter:
         Tf_guess = 0.5 * (Ti1 + Ti2)
         return fsolve(energy_balance, Tf_guess)[0]
 
+    def getIdealFinalTemperature(self, compound1, compound2):
+        n1 = compound1.moles
+        n2 = compound2.moles
+        ti_1 = compound1.temperature
+        ti_2 = compound2.temperature
+        if self.condition == "PRESSURE":
+            c1 = self.compound1.Cp(0)
+            c2 = self.compound2.Cp(0)
+        else: #self.condition == "VOLUME"
+            c1 = self.compound1.Cv(0)
+            c2 = self.compound2.Cv(0)
+
+        tf = ((n1*c1*ti_1) + (n2*c2*ti_2)) / ((n1*c1) + (n2*c2))
+
+        return tf

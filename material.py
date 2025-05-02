@@ -307,3 +307,6 @@ class Material:
     def setMass(self, grams):
         self.mass = grams
         self.moles = grams / self.molarMass
+
+    def setTemperature(self, celsius):
+        self.temperature = celsius + 273.15
