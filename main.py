@@ -4,7 +4,6 @@ from calorimeter import Calorimeter
 MATERIALS = ["Water", "Aluminum", "Copper", "Iron", "Lead", "Silver", "Gold", "Ethanol", "Benzene", "Methanol",
              "Acetone", "Hexane", "Toluene", "Acetonitrile"]
 
-
 def main():
     compound1, compound2 = userChooseMaterial()
 
