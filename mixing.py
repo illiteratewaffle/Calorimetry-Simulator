@@ -4,7 +4,7 @@ from calorimeter import Calorimeter
 MATERIALS = ["Water", "Aluminum", "Copper", "Iron", "Lead", "Silver", "Gold", "Ethanol", "Benzene", "Methanol",
              "Acetone", "Hexane", "Toluene", "Acetonitrile"]
 
-def main():
+def mix():
     compound1, compound2 = userChooseMaterial()
     condition = getCondition()
 
@@ -78,4 +78,4 @@ def getCondition():
         print("Invalid approximation. Refer to the list of available conditions.")
         return None
 
-main()
+mix()
