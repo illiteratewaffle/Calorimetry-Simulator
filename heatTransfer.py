@@ -51,7 +51,7 @@ class GetInput:
         choice = float(input("Enter material mass (grams): "))
         material.setMass(choice)  # grams
 
-        choice = float(input("Enter material temperature (Celsius): "))
+        choice = float(input("Enter initial temperature (Celsius): "))
         material.setTemperature(choice)  # celsius
 
         condition = input("Constant pressure (P) or constant volume (V): ").capitalize()
@@ -71,12 +71,16 @@ class GetInput:
         print("Final T:", Tf - 273.15, "°C")
 
     def findHeat(self, transfer):
-        heatRequired = 273.15 + float(input("Enter a temperature, in Celsius, to find how much heat is required to reach that temperature"))
+        heatRequired = 273.15 + float(input("Enter a temperature, in Celsius, to find how much heat is required to reach that temperature: "))
 
         Q_needed = transfer.heat_required(heatRequired)
         print("Add: ", Q_needed / 1000, " kJ")
         print("Negative Q means system is to lose energy")
 
-    def run(self):
+    def run(self, choice):
         heatParameters = GetInput().setMaterial()
-        self.findHeat(heatParameters)
+
+        if choice == "2":
+            self.addHeat(heatParameters)
+        elif choice == "3":
+            self.findHeat(heatParameters)
