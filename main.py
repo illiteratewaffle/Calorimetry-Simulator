@@ -13,5 +13,4 @@ def main():
     elif selection in ["2", "3"]:
         GetInput().run(selection)
 
-
 main()

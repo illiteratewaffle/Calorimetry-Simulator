@@ -39,6 +39,7 @@ class HeatTransfer:
         dT = Tf - Ti
         return m * self.C_const * dT
 
+
 class GetInput:
 
     def setMaterial(self):
