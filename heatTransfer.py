@@ -39,23 +39,44 @@ class HeatTransfer:
         dT = Tf - Ti
         return m * self.C_const * dT
 
-def setMaterial():
-    water = Material("Water")
-    water.setMass(250) # grams
-    water.setTemperature(20)    # celsius
+class GetInput:
 
-    transfer = HeatTransfer(water, condition="PRESSURE")
+    def setMaterial(self):
 
-    # 1) add 15 kJ of heat and find the final temperature
-    Tf = transfer.final_temperature(15000)
-    print("Final T:", Tf - 273.15, "°C")
+        print("List of Materials: ", MATERIALS)
 
-    # 2) cool it back down to 25°C – how much heat must we remove?
-    Q_needed = transfer.heat_required(298.15)
-    print("Remove:", -Q_needed/1000, "kJ")
+        choice = input("Enter material name: ").capitalize()
+        material = Material(choice)
 
-    # todo: add/remove heat and find final temperature
+        choice = float(input("Enter material mass (grams): "))
+        material.setMass(choice)  # grams
 
-    # todo: change temperature and find how much heat was transferred to the system
+        choice = float(input("Enter material temperature (Celsius): "))
+        material.setTemperature(choice)  # celsius
 
-setMaterial()
+        condition = input("Constant pressure (P) or constant volume (V): ").capitalize()
+        if condition == "P":
+            transfer = HeatTransfer(material, condition="PRESSURE")
+            return transfer
+        elif condition == "V":
+            transfer = HeatTransfer(material, condition="VOLUME")
+            return transfer
+        else:
+            print("Invalid condition. Refer to the list of available conditions.")
+            return None
+
+    def addHeat(self, transfer):
+        heatToAdd = float(input("How much heat, in Joules, do you want to add to the system?"))
+        Tf = transfer.final_temperature(heatToAdd)
+        print("Final T:", Tf - 273.15, "°C")
+
+    def findHeat(self, transfer):
+        heatRequired = 273.15 + float(input("Enter a temperature, in Celsius, to find how much heat is required to reach that temperature"))
+
+        Q_needed = transfer.heat_required(heatRequired)
+        print("Add: ", Q_needed / 1000, " kJ")
+        print("Negative Q means system is to lose energy")
+
+    def run(self):
+        heatParameters = GetInput().setMaterial()
+        self.findHeat(heatParameters)
